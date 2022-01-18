@@ -4,14 +4,14 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
   private let manager = CLLocationManager()
   private var lastKnownLocation: CLLocationCoordinate2D?
   private(set) var isRunning = false
-  var onLocationChange: ((CLLocationCoordinate2D) -> Void)?
+  private var onLocationChange: ((CLLocationCoordinate2D) -> Void)?
 
   override init() {
     super.init()
     manager.delegate = self
   }
 
-  func start() {
+  private func start() {
     guard !isRunning else { return }
     manager.requestWhenInUseAuthorization()
     manager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
@@ -37,14 +37,3 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     }
   }
 }
-
-//extension LocationManager {
-//  static var stream: AsyncStream<CLLocationCoordinate2D> {
-//    AsyncStream { continuation in
-//      let manager = LocationManager()
-//      manager.onLocationChange = { continuation.yield($0) }
-//      continuation.onTermination = { @Sendable _ in manager.stop() }
-//      manager.start()
-//    }
-//  }
-//}

@@ -13,22 +13,23 @@ final class StarFinderViewModel: ObservableObject {
   private var initialCoordinate: CLLocationCoordinate2D?
   private var initialAltitude: Double?
   private var initialAzimuth: Double?
+
   private let locationManager = LocationManager()
   private let headingManager = MagneticHeadingManager()
+  private let rollManager = RollManager()
 
   @Published private(set) var lastKnownPosition: DevicePosition?
 
-
   init() {
-    //temp
-    initialAltitude = 0
-    initialCoordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
-    initialAzimuth = 0
+    startStreams()
+  }
 
+  private func startStreams() {
     Task.detached {
-      for await roll in RollManager.stream {
+      for await rollRad in self.rollManager.stream {
         // TODO: convert to a normalized value... also, rate limit?
-        await self.updateAltitude(roll)
+        let rollDeg = -rollRad * 180 / .pi - 90
+        await self.updateAltitude(rollDeg)
       }
     }
 
@@ -47,7 +48,7 @@ final class StarFinderViewModel: ObservableObject {
     }
   }
 
-  func updateCoordinates(_ coordinate: CLLocationCoordinate2D) {
+  private func updateCoordinates(_ coordinate: CLLocationCoordinate2D) {
     if var position = lastKnownPosition {
       position.latitude = coordinate.latitude
       position.longitude = coordinate.longitude
@@ -58,7 +59,7 @@ final class StarFinderViewModel: ObservableObject {
     }
   }
 
-  func updateAzimuth(_ azimuth: Double) {
+  private func updateAzimuth(_ azimuth: Double) {
     if var position = lastKnownPosition {
       position.azimuth = azimuth
       lastKnownPosition = position
@@ -68,7 +69,7 @@ final class StarFinderViewModel: ObservableObject {
     }
   }
 
-  func updateAltitude(_ altitude: Double) {
+  private func updateAltitude(_ altitude: Double) {
     if var position = lastKnownPosition {
       position.altitude = altitude
       lastKnownPosition = position

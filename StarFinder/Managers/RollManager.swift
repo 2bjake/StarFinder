@@ -9,9 +9,9 @@ import CoreMotion
 
 class RollManager {
   private let manager = CMMotionManager()
-  var onRollChange: ((Double) -> Void)?
+  private var onRollChange: ((Double) -> Void)?
 
-  func start() {
+  private func start() {
     guard manager.isDeviceMotionAvailable && !manager.isDeviceMotionActive else { return }
     manager.startDeviceMotionUpdates(to: .init(), withHandler: handler)
   }
@@ -25,15 +25,12 @@ class RollManager {
     guard manager.isDeviceMotionAvailable && manager.isDeviceMotionActive else { return }
     manager.stopDeviceMotionUpdates()
   }
-}
 
-extension RollManager {
-  static var stream: AsyncStream<Double> {
+  var stream: AsyncStream<Double> {
     AsyncStream { continuation in
-      let manager = RollManager()
-      manager.onRollChange = { continuation.yield($0) }
-      continuation.onTermination = { @Sendable _ in manager.stop() }
-      manager.start()
+      onRollChange = { continuation.yield($0) }
+      continuation.onTermination = { @Sendable _ in self.stop() }
+      start()
     }
   }
 }

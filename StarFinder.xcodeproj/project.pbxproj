@@ -59,14 +59,12 @@
 		558B69B927974062005DEEC0 /* StarFinder */ = {
 			isa = PBXGroup;
 			children = (
+				558B69D027976D52005DEEC0 /* Managers */,
 				558B69BA27974062005DEEC0 /* StarFinderApp.swift */,
 				558B69BC27974062005DEEC0 /* ContentView.swift */,
+				558B69CA2797526C005DEEC0 /* StarFinderViewModel.swift */,
 				558B69BE27974064005DEEC0 /* Assets.xcassets */,
 				558B69C027974064005DEEC0 /* Preview Content */,
-				558B69C827974219005DEEC0 /* LocationManager.swift */,
-				558B69CE2797642E005DEEC0 /* MagneticHeadingManager.swift */,
-				558B69CA2797526C005DEEC0 /* StarFinderViewModel.swift */,
-				558B69CC279758EC005DEEC0 /* RollManager.swift */,
 			);
 			path = StarFinder;
 			sourceTree = "<group>";
@@ -77,6 +75,16 @@
 				558B69C127974064005DEEC0 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		558B69D027976D52005DEEC0 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				558B69C827974219005DEEC0 /* LocationManager.swift */,
+				558B69CE2797642E005DEEC0 /* MagneticHeadingManager.swift */,
+				558B69CC279758EC005DEEC0 /* RollManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

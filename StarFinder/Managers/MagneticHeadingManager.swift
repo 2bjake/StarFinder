@@ -3,14 +3,14 @@ import CoreLocation
 class MagneticHeadingManager: NSObject, CLLocationManagerDelegate {
   private let manager = CLLocationManager()
   private(set) var isRunning = false
-  var onHeadingChange: ((Double) -> Void)?
+  private var onHeadingChange: ((Double) -> Void)?
 
   override init() {
     super.init()
     manager.delegate = self
   }
 
-  func start() {
+  private func start() {
     guard !isRunning else { return }
     manager.requestWhenInUseAuthorization()
     manager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
