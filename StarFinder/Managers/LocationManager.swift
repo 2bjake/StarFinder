@@ -12,15 +12,16 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
 
   private func start() {
     guard !isRunning else { return }
+    isRunning = true
     manager.requestWhenInUseAuthorization()
     manager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
     manager.startUpdatingLocation()
-    isRunning = true
   }
 
   private func stop() {
-    manager.stopUpdatingLocation()
+    guard isRunning else { return }
     isRunning = false
+    manager.stopUpdatingLocation()
   }
 
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
