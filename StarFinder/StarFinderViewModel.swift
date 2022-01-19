@@ -9,6 +9,8 @@ struct DevicePosition {
   var azimuth: Double
 }
 
+enum WayfinderDirection { case up, down, left, right, center }
+
 @MainActor
 final class StarFinderViewModel: ObservableObject {
   private var partialPosition = PartialPosition()
@@ -23,28 +25,52 @@ final class StarFinderViewModel: ObservableObject {
 
   init() { }
 
+  func directions(to target: DevicePosition) -> Set<WayfinderDirection> {
+    var directions = Set<WayfinderDirection>()
+    guard let currentPosition = lastKnownPosition else { return directions }
+
+    if currentPosition.altitude - target.altitude > 5 {
+      directions.insert(.down)
+    } else if currentPosition.altitude - target.altitude < -5 {
+      directions.insert(.up)
+    }
+
+    // TODO: deal with 360 = 0
+    if currentPosition.azimuth - target.azimuth > 5 {
+      directions.insert(.right)
+    } else if currentPosition.azimuth - target.azimuth < -5 {
+      directions.insert(.left)
+    }
+
+    if directions.isEmpty {
+      directions.insert(.center)
+    }
+
+    return directions
+  }
+
   func startTracking() {
     guard !isTracking else { return }
     isTracking = true
 
     let altitudeManager = AltitudeManager()
-    altitudeTask = Task.detached { [weak self] in
+    altitudeTask = Task { [weak self] in
       for await altitude in altitudeManager.makeStream() {
-        await self?.updateAltitude(altitude)
+        self?.updateAltitude(altitude)
       }
     }
 
     let locationManager = LocationManager()
-    locationTask = Task.detached { [weak self] in
+    locationTask = Task { [weak self] in
       for await location in locationManager.makeStream() {
-        await self?.updateCoordinate(location)
+        self?.updateCoordinate(location)
       }
     }
 
     let headingManager = MagneticHeadingManager()
-    headingTask = Task.detached { [weak self] in
+    headingTask = Task { [weak self] in
       for await heading in headingManager.makeStream() {
-        await self?.updateAzimuth(heading)
+        self?.updateAzimuth(heading)
       }
     }
   }

@@ -15,6 +15,7 @@
 		558B69CB2797526C005DEEC0 /* StarFinderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69CA2797526C005DEEC0 /* StarFinderViewModel.swift */; };
 		558B69CD279758EC005DEEC0 /* AltitudeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69CC279758EC005DEEC0 /* AltitudeManager.swift */; };
 		558B69CF2797642E005DEEC0 /* MagneticHeadingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69CE2797642E005DEEC0 /* MagneticHeadingManager.swift */; };
+		558B69D227986706005DEEC0 /* WayfinderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69D127986706005DEEC0 /* WayfinderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		558B69CA2797526C005DEEC0 /* StarFinderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarFinderViewModel.swift; sourceTree = "<group>"; };
 		558B69CC279758EC005DEEC0 /* AltitudeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AltitudeManager.swift; sourceTree = "<group>"; };
 		558B69CE2797642E005DEEC0 /* MagneticHeadingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagneticHeadingManager.swift; sourceTree = "<group>"; };
+		558B69D127986706005DEEC0 /* WayfinderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WayfinderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 				558B69CA2797526C005DEEC0 /* StarFinderViewModel.swift */,
 				558B69BE27974064005DEEC0 /* Assets.xcassets */,
 				558B69C027974064005DEEC0 /* Preview Content */,
+				558B69D127986706005DEEC0 /* WayfinderView.swift */,
 			);
 			path = StarFinder;
 			sourceTree = "<group>";
@@ -159,6 +162,7 @@
 			files = (
 				558B69BD27974062005DEEC0 /* ContentView.swift in Sources */,
 				558B69CD279758EC005DEEC0 /* AltitudeManager.swift in Sources */,
+				558B69D227986706005DEEC0 /* WayfinderView.swift in Sources */,
 				558B69CF2797642E005DEEC0 /* MagneticHeadingManager.swift in Sources */,
 				558B69BB27974062005DEEC0 /* StarFinderApp.swift in Sources */,
 				558B69CB2797526C005DEEC0 /* StarFinderViewModel.swift in Sources */,

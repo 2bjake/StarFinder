@@ -15,6 +15,7 @@ class MagneticHeadingManager: NSObject, CLLocationManagerDelegate {
     isRunning = true
     manager.requestWhenInUseAuthorization()
     manager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+    manager.headingOrientation = .landscapeLeft
     manager.startUpdatingHeading()
   }
 

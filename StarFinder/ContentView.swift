@@ -15,25 +15,37 @@ struct ContentView: View {
     return "\(value)"
   }
 
-  var body: some View {
-    VStack {
-      Text("Latitude: \(displayString(for: \.latitude))")
-        .padding()
-      Text("Longitude: \(displayString(for: \.longitude))")
-        .padding()
-      Text("Altitude: \(displayString(for: \.altitude))")
-        .padding()
-      Text("Azimuth: \(displayString(for: \.azimuth))")
-        .padding()
+  // TODO: don't hardcode this 🙃
+  var target: DevicePosition {
+    .init(latitude: 0, longitude: 0, altitude: 30, azimuth: 0)
+  }
 
-      Button("Start") { viewModel.startTracking() }
-      Button("Stop") { viewModel.stopTracking() }
+  var body: some View {
+    ZStack {
+      WayfinderView(directions: viewModel.directions(to: target))
+
+      VStack {
+        Text("Latitude: \(displayString(for: \.latitude))")
+          .padding()
+        Text("Longitude: \(displayString(for: \.longitude))")
+          .padding()
+        Text("Altitude: \(displayString(for: \.altitude))")
+          .padding()
+        Text("Azimuth: \(displayString(for: \.azimuth))")
+          .padding()
+
+        //Button("Start") { viewModel.startTracking() }
+        //Button("Stop") { viewModel.stopTracking() }
+      }
     }
+    .onAppear { viewModel.startTracking() }
+    .onDisappear { viewModel.stopTracking() }
   }
 }
 
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
     ContentView()
+      .previewInterfaceOrientation(.landscapeLeft)
   }
 }
