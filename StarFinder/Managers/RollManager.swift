@@ -21,7 +21,7 @@ class RollManager {
     onRollChange?(motion.attitude.roll)
   }
 
-  func stop() {
+  private func stop() {
     guard manager.isDeviceMotionAvailable && manager.isDeviceMotionActive else { return }
     manager.stopDeviceMotionUpdates()
   }

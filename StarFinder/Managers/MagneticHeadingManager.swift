@@ -12,23 +12,23 @@ class MagneticHeadingManager: NSObject, CLLocationManagerDelegate {
 
   private func start() {
     guard !isRunning else { return }
+    isRunning = true
     manager.requestWhenInUseAuthorization()
     manager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
     manager.startUpdatingHeading()
-    isRunning = true
   }
 
-  func stop() {
+  private func stop() {
     guard isRunning else { return }
-    manager.stopUpdatingHeading()
     isRunning = false
+    manager.stopUpdatingHeading()
   }
 
   var stream: AsyncStream<Double> {
-    AsyncStream { continuation in
-      onHeadingChange = {
-        continuation.yield($0)
-      }
+    guard !isRunning else { fatalError("Attempted to start stream when it's already running.") }
+
+    return AsyncStream { continuation in
+      onHeadingChange = { continuation.yield($0) }
       continuation.onTermination = { @Sendable _ in self.stop() }
       start()
     }

@@ -25,6 +25,9 @@ struct ContentView: View {
         .padding()
       Text("Azimuth: \(displayString(for: \.azimuth))")
         .padding()
+
+      Button("Start") { viewModel.startTracking() }
+      Button("Stop") { viewModel.stopTracking() }
     }
   }
 }

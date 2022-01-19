@@ -18,34 +18,59 @@ final class StarFinderViewModel: ObservableObject {
   private let headingManager = MagneticHeadingManager()
   private let rollManager = RollManager()
 
+  private var locationTask: Task<Void, Never>?
+  private var headingTask: Task<Void, Never>?
+  private var rollTask: Task<Void, Never>?
+
+  private var isTracking = false
+
   @Published private(set) var lastKnownPosition: DevicePosition?
 
-  init() {
-    startStreams()
-  }
+  init() { }
 
-  private func startStreams() {
-    Task.detached {
+  func startTracking() {
+    guard !isTracking else { return }
+    isTracking = true
+
+    rollTask = Task.detached {
       for await rollRad in self.rollManager.stream {
         // TODO: convert to a normalized value... also, rate limit?
         let rollDeg = -rollRad * 180 / .pi - 90
         await self.updateAltitude(rollDeg)
       }
+      print("finished tracking roll")
     }
 
-    Task.detached {
+    locationTask = Task.detached {
       for await location in self.locationManager.stream {
         // TODO: convert to a normalized type... also, rate limit?
         await self.updateCoordinates(location)
       }
+      print("finished tracking location")
     }
 
-    Task.detached {
+    headingTask = Task.detached {
       for await heading in self.headingManager.stream {
         // TODO: convert to a normalized value... also, rate limit?
         await self.updateAzimuth(heading)
       }
+      print("finished tracking heading")
     }
+  }
+
+  func stopTracking() {
+    guard isTracking else { return }
+    isTracking = false
+
+    locationTask?.cancel()
+    locationTask = nil
+
+    headingTask?.cancel()
+    headingTask = nil
+
+    rollTask?.cancel()
+    rollTask = nil
+
   }
 
   private func updateCoordinates(_ coordinate: CLLocationCoordinate2D) {
