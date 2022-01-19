@@ -2,7 +2,7 @@ import CoreLocation
 
 class MagneticHeadingManager: NSObject, CLLocationManagerDelegate {
   private let manager = CLLocationManager()
-  private(set) var isRunning = false
+  private var isRunning = false
   private var onHeadingChange: ((Double) -> Void)?
 
   override init() {
@@ -24,7 +24,7 @@ class MagneticHeadingManager: NSObject, CLLocationManagerDelegate {
     manager.stopUpdatingHeading()
   }
 
-  var stream: AsyncStream<Double> {
+  func makeStream() -> AsyncStream<Double> {
     guard !isRunning else { fatalError("Attempted to start stream when it's already running.") }
 
     return AsyncStream { continuation in

@@ -11,9 +11,11 @@ class RollManager {
   private let manager = CMMotionManager()
   private var onRollChange: ((Double) -> Void)?
 
+  private var isRunning: Bool { manager.isDeviceMotionActive }
+
   private func start() {
     guard manager.isDeviceMotionAvailable && !manager.isDeviceMotionActive else { return }
-    manager.startDeviceMotionUpdates(to: .init(), withHandler: handler)
+    manager.startDeviceMotionUpdates(to: .init()) { [weak self] in self?.handler(motion: $0, error: $1) }
   }
 
   private func handler(motion: CMDeviceMotion?, error: Error?) {
@@ -22,14 +24,16 @@ class RollManager {
   }
 
   private func stop() {
-    guard manager.isDeviceMotionAvailable && manager.isDeviceMotionActive else { return }
+    guard isRunning else { return }
     manager.stopDeviceMotionUpdates()
   }
 
-  var stream: AsyncStream<Double> {
-    AsyncStream { continuation in
+  func makeStream() -> AsyncStream<Double> {
+    guard !isRunning else { fatalError("Attempted to start stream when it's already running.") }
+
+    return AsyncStream { continuation in
       onRollChange = { continuation.yield($0) }
-      continuation.onTermination = { @Sendable _ in self.stop() }
+      continuation.onTermination = { @Sendable [weak self] _ in self?.stop() }
       start()
     }
   }

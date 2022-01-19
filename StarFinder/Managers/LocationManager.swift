@@ -2,7 +2,7 @@ import CoreLocation
 
 class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
   private let manager = CLLocationManager()
-  private(set) var isRunning = false
+  private var isRunning = false
   private var onLocationChange: ((CLLocationCoordinate2D) -> Void)?
 
   override init() {
@@ -28,7 +28,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     onLocationChange?(locations.last!.coordinate)
   }
 
-  var stream: AsyncStream<CLLocationCoordinate2D> {
+  func makeStream() -> AsyncStream<CLLocationCoordinate2D> {
     guard !isRunning else { fatalError("Attempted to start stream when it is already running.") }
 
     return AsyncStream { continuation in

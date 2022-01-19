@@ -14,9 +14,9 @@ final class StarFinderViewModel: ObservableObject {
   private var initialAltitude: Double?
   private var initialAzimuth: Double?
 
-  private let locationManager = LocationManager()
-  private let headingManager = MagneticHeadingManager()
-  private let rollManager = RollManager()
+  private var locationManager: LocationManager?
+  private var headingManager: MagneticHeadingManager?
+  private var rollManager: RollManager?
 
   private var locationTask: Task<Void, Never>?
   private var headingTask: Task<Void, Never>?
@@ -32,8 +32,9 @@ final class StarFinderViewModel: ObservableObject {
     guard !isTracking else { return }
     isTracking = true
 
+    rollManager = RollManager()
     rollTask = Task.detached {
-      for await rollRad in self.rollManager.stream {
+      for await rollRad in await self.rollManager!.makeStream() {
         // TODO: convert to a normalized value... also, rate limit?
         let rollDeg = -rollRad * 180 / .pi - 90
         await self.updateAltitude(rollDeg)
@@ -41,16 +42,18 @@ final class StarFinderViewModel: ObservableObject {
       print("finished tracking roll")
     }
 
+    locationManager = LocationManager()
     locationTask = Task.detached {
-      for await location in self.locationManager.stream {
+      for await location in await self.locationManager!.makeStream() {
         // TODO: convert to a normalized type... also, rate limit?
         await self.updateCoordinates(location)
       }
       print("finished tracking location")
     }
 
+    headingManager = MagneticHeadingManager()
     headingTask = Task.detached {
-      for await heading in self.headingManager.stream {
+      for await heading in await self.headingManager!.makeStream() {
         // TODO: convert to a normalized value... also, rate limit?
         await self.updateAzimuth(heading)
       }
@@ -64,12 +67,15 @@ final class StarFinderViewModel: ObservableObject {
 
     locationTask?.cancel()
     locationTask = nil
+    locationManager = nil
 
     headingTask?.cancel()
     headingTask = nil
+    headingManager = nil
 
     rollTask?.cancel()
     rollTask = nil
+    rollManager = nil
 
   }
 
