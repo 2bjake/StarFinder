@@ -1,6 +1,6 @@
 import CoreLocation
 
-class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
+class LocationManager: NSObject, CLLocationManagerDelegate {
   private let manager = CLLocationManager()
   private var isRunning = false
   private var onLocationChange: ((CLLocationCoordinate2D) -> Void)?

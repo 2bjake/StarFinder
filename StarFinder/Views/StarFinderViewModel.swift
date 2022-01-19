@@ -1,13 +1,6 @@
 import Foundation
 import CoreLocation
-
-// All values are in degrees
-struct DevicePosition {
-  var latitude: Double
-  var longitude: Double
-  var altitude: Double
-  var azimuth: Double
-}
+import StarCoordinates
 
 enum WayfinderDirection { case up, down, left, right, center }
 
@@ -25,20 +18,20 @@ final class StarFinderViewModel: ObservableObject {
 
   init() { }
 
-  func directions(to target: DevicePosition) -> Set<WayfinderDirection> {
+  func directions(to target: HorizontalCoordinates) -> Set<WayfinderDirection> {
     var directions = Set<WayfinderDirection>()
     guard let currentPosition = lastKnownPosition else { return directions }
 
-    if currentPosition.altitude - target.altitude > 5 {
+    if currentPosition.altitude - target.altitudeDeg > 5 {
       directions.insert(.down)
-    } else if currentPosition.altitude - target.altitude < -5 {
+    } else if currentPosition.altitude - target.altitudeDeg < -5 {
       directions.insert(.up)
     }
 
     // TODO: deal with 360 = 0
-    if currentPosition.azimuth - target.azimuth > 5 {
+    if currentPosition.azimuth - target.azimuthDeg > 5 {
       directions.insert(.right)
-    } else if currentPosition.azimuth - target.azimuth < -5 {
+    } else if currentPosition.azimuth - target.azimuthDeg < -5 {
       directions.insert(.left)
     }
 
@@ -53,22 +46,22 @@ final class StarFinderViewModel: ObservableObject {
     guard !isTracking else { return }
     isTracking = true
 
-    let altitudeManager = AltitudeManager()
     altitudeTask = Task { [weak self] in
+      let altitudeManager = AltitudeManager()
       for await altitude in altitudeManager.makeStream() {
         self?.updateAltitude(altitude)
       }
     }
 
-    let locationManager = LocationManager()
     locationTask = Task { [weak self] in
+      let locationManager = LocationManager()
       for await location in locationManager.makeStream() {
         self?.updateCoordinate(location)
       }
     }
 
-    let headingManager = MagneticHeadingManager()
     headingTask = Task { [weak self] in
+      let headingManager = MagneticHeadingManager()
       for await heading in headingManager.makeStream() {
         self?.updateAzimuth(heading)
       }

@@ -1,13 +1,18 @@
 //
-//  ContentView.swift
+//  StarFinderView.swift
 //  StarFinder
 //
 //  Created by Jake Foster on 1/18/22.
 //
 
 import SwiftUI
+import StarCoordinates
 
-struct ContentView: View {
+extension HorizontalCoordinates {
+  static var example: Self { HorizontalCoordinates(altitudeDeg: 30, azimuthDeg: 0) }
+}
+
+struct StarFinderView: View {
   @StateObject private var viewModel = StarFinderViewModel()
 
   func displayString(for keyPath: KeyPath<DevicePosition, Double>) -> String {
@@ -15,14 +20,11 @@ struct ContentView: View {
     return "\(value)"
   }
 
-  // TODO: don't hardcode this 🙃
-  var target: DevicePosition {
-    .init(latitude: 0, longitude: 0, altitude: 30, azimuth: 0)
-  }
+  let target: HorizontalCoordinates
 
   var body: some View {
     ZStack {
-      WayfinderView(directions: viewModel.directions(to: target))
+      ViewfinderDirectionsView(directions: viewModel.directions(to: target))
 
       VStack {
         Text("Latitude: \(displayString(for: \.latitude))")
@@ -45,7 +47,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
-    ContentView()
+    StarFinderView(target: .example)
       .previewInterfaceOrientation(.landscapeLeft)
   }
 }

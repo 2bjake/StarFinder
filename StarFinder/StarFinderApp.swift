@@ -9,9 +9,9 @@ import SwiftUI
 
 @main
 struct StarFinderApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+  var body: some Scene {
+    WindowGroup {
+      StarFinderView(target: .example) // TODO: don't hardcode target
     }
+  }
 }
