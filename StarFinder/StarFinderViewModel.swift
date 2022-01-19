@@ -1,6 +1,7 @@
 import Foundation
 import CoreLocation
 
+// All values are in degrees
 struct DevicePosition {
   var latitude: Double
   var longitude: Double
@@ -10,13 +11,11 @@ struct DevicePosition {
 
 @MainActor
 final class StarFinderViewModel: ObservableObject {
-  private var initialCoordinate: CLLocationCoordinate2D?
-  private var initialAltitude: Double?
-  private var initialAzimuth: Double?
+  private var partialPosition = PartialPosition()
 
   private var locationTask: Task<Void, Never>?
   private var headingTask: Task<Void, Never>?
-  private var rollTask: Task<Void, Never>?
+  private var altitudeTask: Task<Void, Never>?
 
   private var isTracking = false
 
@@ -28,28 +27,24 @@ final class StarFinderViewModel: ObservableObject {
     guard !isTracking else { return }
     isTracking = true
 
-    let rollManager = RollManager()
-    rollTask = Task.detached {
-      for await rollRad in rollManager.makeStream() {
-        // TODO: convert to a normalized value... also, rate limit?
-        let rollDeg = -rollRad * 180 / .pi - 90
-        await self.updateAltitude(rollDeg)
+    let altitudeManager = AltitudeManager()
+    altitudeTask = Task.detached { [weak self] in
+      for await altitude in altitudeManager.makeStream() {
+        await self?.updateAltitude(altitude)
       }
     }
 
     let locationManager = LocationManager()
-    locationTask = Task.detached {
+    locationTask = Task.detached { [weak self] in
       for await location in locationManager.makeStream() {
-        // TODO: convert to a normalized type... also, rate limit?
-        await self.updateCoordinates(location)
+        await self?.updateCoordinate(location)
       }
     }
 
     let headingManager = MagneticHeadingManager()
-    headingTask = Task.detached {
+    headingTask = Task.detached { [weak self] in
       for await heading in headingManager.makeStream() {
-        // TODO: convert to a normalized value... also, rate limit?
-        await self.updateAzimuth(heading)
+        await self?.updateAzimuth(heading)
       }
     }
   }
@@ -64,46 +59,57 @@ final class StarFinderViewModel: ObservableObject {
     headingTask?.cancel()
     headingTask = nil
 
-    rollTask?.cancel()
-    rollTask = nil
+    altitudeTask?.cancel()
+    altitudeTask = nil
   }
 
-  private func updateCoordinates(_ coordinate: CLLocationCoordinate2D) {
-    if var position = lastKnownPosition {
-      position.latitude = coordinate.latitude
-      position.longitude = coordinate.longitude
-      lastKnownPosition = position
+  deinit {
+    locationTask?.cancel()
+    headingTask?.cancel()
+    altitudeTask?.cancel()
+  }
+
+  private func updateCoordinate(_ coordinate: CLLocationCoordinate2D) {
+    if lastKnownPosition == nil {
+      partialPosition.coordinate = coordinate
+      lastKnownPosition = partialPosition.attemptPositionCreation()
     } else {
-      initialCoordinate = coordinate
-      checkUpdatePosition()
+      lastKnownPosition?.latitude = coordinate.latitude
+      lastKnownPosition?.longitude = coordinate.longitude
     }
   }
 
   private func updateAzimuth(_ azimuth: Double) {
-    if var position = lastKnownPosition {
-      position.azimuth = azimuth
-      lastKnownPosition = position
+    if lastKnownPosition == nil {
+      partialPosition.azimuth = azimuth
+      lastKnownPosition = partialPosition.attemptPositionCreation()
     } else {
-      initialAzimuth = azimuth
-      checkUpdatePosition()
+      lastKnownPosition?.azimuth = azimuth
     }
   }
 
   private func updateAltitude(_ altitude: Double) {
-    if var position = lastKnownPosition {
-      position.altitude = altitude
-      lastKnownPosition = position
+    if lastKnownPosition == nil {
+      partialPosition.altitude = altitude
+      lastKnownPosition = partialPosition.attemptPositionCreation()
     } else {
-      initialAltitude = altitude
-      checkUpdatePosition()
+      lastKnownPosition?.altitude = altitude
     }
   }
+}
 
-  private func checkUpdatePosition() {
-    if let coordinate = initialCoordinate,
-       let azimuth = initialAzimuth,
-       let altitude = initialAltitude {
-      lastKnownPosition = DevicePosition(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude, azimuth: azimuth)
-    }
+// Each data point comes in from a separate manager, so this holds each value until all have been recorded.
+private struct PartialPosition {
+  var coordinate: CLLocationCoordinate2D?
+  var altitude: Double?
+  var azimuth: Double?
+
+  func attemptPositionCreation() -> DevicePosition? {
+    guard let coordinate = coordinate,
+          let altitude = altitude,
+          let azimuth = azimuth
+    else { return nil }
+
+    return DevicePosition(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude, azimuth: azimuth)
   }
 }

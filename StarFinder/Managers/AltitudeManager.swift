@@ -1,5 +1,5 @@
 //
-//  RollManager.swift
+//  AltitudeManager.swift
 //  StarFinder
 //
 //  Created by Jake Foster on 1/18/22.
@@ -7,9 +7,9 @@
 
 import CoreMotion
 
-class RollManager {
+class AltitudeManager {
   private let manager = CMMotionManager()
-  private var onRollChange: ((Double) -> Void)?
+  private var onAltitudeChange: ((Double) -> Void)?
 
   private var isRunning: Bool { manager.isDeviceMotionActive }
 
@@ -20,7 +20,9 @@ class RollManager {
 
   private func handler(motion: CMDeviceMotion?, error: Error?) {
     guard error == nil, let motion = motion else { return }
-    onRollChange?(motion.attitude.roll)
+    let rollRadians = motion.attitude.roll
+    let altitudeDegrees = -rollRadians * 180 / .pi - 90 // TODO: what to do for >90?
+    onAltitudeChange?(altitudeDegrees)
   }
 
   private func stop() {
@@ -32,7 +34,7 @@ class RollManager {
     guard !isRunning else { fatalError("Attempted to start stream when it's already running.") }
 
     return AsyncStream { continuation in
-      onRollChange = { continuation.yield($0) }
+      onAltitudeChange = { continuation.yield($0) }
       continuation.onTermination = { @Sendable [weak self] _ in self?.stop() }
       start()
     }
