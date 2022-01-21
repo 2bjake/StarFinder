@@ -23,6 +23,7 @@
 		558B69DF2798B395005DEEC0 /* Star.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69DE2798B395005DEEC0 /* Star.swift */; };
 		558B69E12799AE8A005DEEC0 /* StarDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69E02799AE8A005DEEC0 /* StarDetailView.swift */; };
 		558B69E32799C854005DEEC0 /* ARViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69E22799C854005DEEC0 /* ARViewContainer.swift */; };
+		558B69E5279B4C07005DEEC0 /* StarDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69E4279B4C07005DEEC0 /* StarDetailViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		558B69DE2798B395005DEEC0 /* Star.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Star.swift; sourceTree = "<group>"; };
 		558B69E02799AE8A005DEEC0 /* StarDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarDetailView.swift; sourceTree = "<group>"; };
 		558B69E22799C854005DEEC0 /* ARViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewContainer.swift; sourceTree = "<group>"; };
+		558B69E4279B4C07005DEEC0 /* StarDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarDetailViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 				558B69DA2798B36D005DEEC0 /* StarListView.swift */,
 				558B69DC2798B383005DEEC0 /* StarListViewModel.swift */,
 				558B69E02799AE8A005DEEC0 /* StarDetailView.swift */,
+				558B69E4279B4C07005DEEC0 /* StarDetailViewModel.swift */,
 				558B69E22799C854005DEEC0 /* ARViewContainer.swift */,
 			);
 			path = Views;
@@ -209,6 +212,7 @@
 				558B69CD279758EC005DEEC0 /* AltitudeManager.swift in Sources */,
 				558B69DB2798B36D005DEEC0 /* StarListView.swift in Sources */,
 				558B69E32799C854005DEEC0 /* ARViewContainer.swift in Sources */,
+				558B69E5279B4C07005DEEC0 /* StarDetailViewModel.swift in Sources */,
 				558B69D227986706005DEEC0 /* ViewfinderDirectionsView.swift in Sources */,
 				558B69CF2797642E005DEEC0 /* MagneticHeadingManager.swift in Sources */,
 				558B69D72798AA46005DEEC0 /* DevicePosition.swift in Sources */,

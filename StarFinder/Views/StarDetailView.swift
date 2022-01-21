@@ -3,6 +3,10 @@ import CoreLocation
 import StarCoordinates
 
 extension Double {
+  var formattedToTenth: String {
+    String(format: "%.01f", self)
+  }
+
   var formattedToHundredth: String {
     String(format: "%.02f", self)
   }
@@ -15,11 +19,16 @@ func degreesMinutesSecondsString(_ angle: Double) -> String{
   let minutes = Int(remainder * 60)
   let seconds = (remainder - Double(minutes) / 60) * 3600
 
-  return "\(isNegative ? "-" : "+")\(degrees)° \(minutes)' \(seconds.formatted(.number.precision(.significantDigits(2))))\""
+  return "\(isNegative ? "-" : "+")\(degrees)° \(minutes)' \(seconds.formattedToTenth)\""
 }
 
 struct StarDetailView: View {
-  @StateObject private var viewModel = StarFinderViewModel() // TODO: make version that just captures lat/long
+  @StateObject private var viewModel = StarDetailViewModel()
+  @State private var horizontalCoordinates: HorizontalCoordinates?
+
+  let timer = Timer.publish(every: 1, tolerance: 0, on: .main, in: .common)
+    .autoconnect()
+    .map { _ in () }
 
   let star: Star
 
@@ -32,16 +41,6 @@ struct StarDetailView: View {
     degreesMinutesSecondsString(star.coordinates.declination.degrees)
   }
 
-  var location: CLLocationCoordinate2D? {
-    guard let position = viewModel.lastKnownPosition else { return nil }
-    return CLLocationCoordinate2D(latitude: position.latitude, longitude: position.longitude)
-  }
-
-  var horizontalCoordinates: HorizontalCoordinates? {
-    guard let location = location else { return nil }
-    return .init(coordinates: star.coordinates, location: location, date: .now)
-  }
-
   var body: some View {
     List {
       Section("Coordinates") {
@@ -49,7 +48,7 @@ struct StarDetailView: View {
 
         Text("Declination: " + decString)
 
-        if let location = location, let coords = horizontalCoordinates {
+        if let location = viewModel.lastKnownLocation, let coords = horizontalCoordinates {
           Text("Azimuth: " + degreesMinutesSecondsString(coords.azimuthDeg))
           Text("Altitude: " + degreesMinutesSecondsString(coords.altitudeDeg))
 
@@ -60,9 +59,15 @@ struct StarDetailView: View {
       }
       .listStyle(InsetGroupedListStyle())
       .navigationTitle(star.name)
+      .onReceive(timer, perform: updateCoordinates)
       .onAppear { viewModel.startTracking() }
       .onDisappear { viewModel.stopTracking() }
     }
+  }
+
+  private func updateCoordinates() {
+    guard let location = viewModel.lastKnownLocation else { return }
+    horizontalCoordinates = .init(coordinates: star.coordinates, location: location, date: .now)
   }
 }
 
