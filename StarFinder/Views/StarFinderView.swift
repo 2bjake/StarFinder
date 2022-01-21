@@ -7,26 +7,30 @@
 
 import SwiftUI
 import StarCoordinates
+import CoreLocation
 
-extension HorizontalCoordinates {
-  static var example: Self { HorizontalCoordinates(altitudeDeg: 30, azimuthDeg: 90) }
-}
-
+/// View that shows the camera and directs the user toward the location specified 
 struct StarFinderView: View {
   @StateObject private var viewModel = StarFinderViewModel()
+  @State private var horizontalCoords: HorizontalCoordinates
 
-  func displayString(for keyPath: KeyPath<DevicePosition, Double>) -> String {
-    guard let value = viewModel.lastKnownPosition?[keyPath: keyPath].formattedToHundredth else { return "unknown" }
-    return "\(value)"
+  let timer = Timer.publish(every: 1, tolerance: 0.1, on: .main, in: .common)
+    .autoconnect()
+    .map { _ in () }
+
+  let equatorialCoords: EquatorialCoordinates
+
+  init(equatorialCoords: EquatorialCoordinates, initialLocation: CLLocationCoordinate2D) {
+    self.equatorialCoords = equatorialCoords
+    _horizontalCoords = State(initialValue: .init(coordinates: equatorialCoords, location: initialLocation, date: .now))
   }
-
-  let target: HorizontalCoordinates // TODO: this needs to be ra/dec and actual target updated constantly
 
   var body: some View {
     ZStack {
       ARViewContainer()
         .ignoresSafeArea()
-      ViewfinderDirectionsView(directions: viewModel.directions(to: target))
+
+      ViewfinderDirectionsView(directions: viewModel.directions(to: horizontalCoords))
 
       VStack {
         Text("Latitude: \(displayString(for: \.latitude))")
@@ -41,12 +45,23 @@ struct StarFinderView: View {
     }
     .onAppear { viewModel.startTracking() }
     .onDisappear { viewModel.stopTracking() }
+    .onReceive(timer, perform: updateCoordinates)
+  }
+
+  func updateCoordinates() {
+    guard let position = viewModel.lastKnownPosition else { return }
+    horizontalCoords = HorizontalCoordinates(coordinates: equatorialCoords, location: CLLocationCoordinate2D(latitude: position.latitude, longitude: position.longitude), date: .now)
+  }
+
+  func displayString(for keyPath: KeyPath<DevicePosition, Double>) -> String {
+    guard let value = viewModel.lastKnownPosition?[keyPath: keyPath].formattedToHundredth else { return "unknown" }
+    return "\(value)"
   }
 }
 
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
-    StarFinderView(target: .example)
+    StarFinderView(equatorialCoords: Star.example.coordinates, initialLocation: .init())
       .previewInterfaceOrientation(.landscapeLeft)
   }
 }

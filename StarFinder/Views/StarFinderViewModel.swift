@@ -16,8 +16,6 @@ final class StarFinderViewModel: ObservableObject {
 
   @Published private(set) var lastKnownPosition: DevicePosition?
 
-  init() { }
-
   func directions(to target: HorizontalCoordinates) -> Set<WayfinderDirection> {
     var directions = Set<WayfinderDirection>()
     guard let currentPosition = lastKnownPosition else { return directions }

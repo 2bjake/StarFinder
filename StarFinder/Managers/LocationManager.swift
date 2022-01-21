@@ -13,7 +13,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
   private func start() {
     guard !isRunning else { return }
     isRunning = true
-    manager.requestWhenInUseAuthorization()
+    manager.requestWhenInUseAuthorization() // TODO: handle authorization more robustly
     manager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
     manager.startUpdatingLocation()
   }

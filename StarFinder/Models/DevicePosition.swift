@@ -5,7 +5,3 @@ struct DevicePosition {
   var altitude: Double
   var azimuth: Double
 }
-
-extension DevicePosition {
-  static var example: DevicePosition { .init(latitude: 0, longitude: 0, altitude: 30, azimuth: 0) }
-}

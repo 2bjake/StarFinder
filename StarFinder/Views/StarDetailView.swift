@@ -46,14 +46,16 @@ struct StarDetailView: View {
     List {
       Section("Coordinates") {
         Text("Right ascension: " + raString)
+
         Text("Declination: " + decString)
-        if let coords = horizontalCoordinates {
+
+        if let location = location, let coords = horizontalCoordinates {
           Text("Azimuth: " + degreesMinutesSecondsString(coords.azimuthDeg))
           Text("Altitude: " + degreesMinutesSecondsString(coords.altitudeDeg))
-          NavigationLink("Find") {
-            StarFinderView(target: coords)
-          }
 
+          NavigationLink("Find") {
+            StarFinderView(equatorialCoords: star.coordinates, initialLocation: location)
+          }
         }
       }
       .listStyle(InsetGroupedListStyle())
