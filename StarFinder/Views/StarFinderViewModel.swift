@@ -30,9 +30,9 @@ final class StarFinderViewModel: ObservableObject {
 
     // TODO: deal with 360 = 0
     if currentPosition.azimuth - target.azimuthDeg > 5 {
-      directions.insert(.right)
-    } else if currentPosition.azimuth - target.azimuthDeg < -5 {
       directions.insert(.left)
+    } else if currentPosition.azimuth - target.azimuthDeg < -5 {
+      directions.insert(.right)
     }
 
     if directions.isEmpty {

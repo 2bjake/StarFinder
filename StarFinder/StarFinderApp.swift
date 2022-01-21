@@ -11,7 +11,7 @@ import SwiftUI
 struct StarFinderApp: App {
   var body: some Scene {
     WindowGroup {
-      StarFinderView(target: .example) // TODO: don't hardcode target
+      StarListView()
     }
   }
 }
