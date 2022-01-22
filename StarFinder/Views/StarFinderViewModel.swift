@@ -20,16 +20,16 @@ final class StarFinderViewModel: ObservableObject {
     var directions = Set<WayfinderDirection>()
     guard let currentPosition = lastKnownPosition else { return directions }
 
-    if currentPosition.altitude - target.altitude.decimalDegrees > 5 {
+    if currentPosition.altitude.decimalDegrees - target.altitude.decimalDegrees > 5 {
       directions.insert(.down)
-    } else if currentPosition.altitude - target.altitude.decimalDegrees < -5 {
+    } else if currentPosition.altitude.decimalDegrees - target.altitude.decimalDegrees < -5 {
       directions.insert(.up)
     }
 
     // TODO: deal with 360 = 0
-    if currentPosition.azimuth - target.azimuth.decimalDegrees > 5 {
+    if currentPosition.azimuth.decimalDegrees - target.azimuth.decimalDegrees > 5 {
       directions.insert(.left)
-    } else if currentPosition.azimuth - target.azimuth.decimalDegrees < -5 {
+    } else if currentPosition.azimuth.decimalDegrees - target.azimuth.decimalDegrees < -5 {
       directions.insert(.right)
     }
 
@@ -97,6 +97,7 @@ final class StarFinderViewModel: ObservableObject {
   }
 
   private func updateAzimuth(_ azimuth: Double) {
+    let azimuth = Angle(decimalDegrees: azimuth)
     if lastKnownPosition == nil {
       partialPosition.azimuth = azimuth
       lastKnownPosition = partialPosition.attemptPositionCreation()
@@ -106,6 +107,7 @@ final class StarFinderViewModel: ObservableObject {
   }
 
   private func updateAltitude(_ altitude: Double) {
+    let altitude = Angle(decimalDegrees: altitude)
     if lastKnownPosition == nil {
       partialPosition.altitude = altitude
       lastKnownPosition = partialPosition.attemptPositionCreation()
@@ -118,8 +120,8 @@ final class StarFinderViewModel: ObservableObject {
 // Each data point comes in from a separate manager, so this holds each value until all have been recorded.
 private struct PartialPosition {
   var location: Location?
-  var altitude: Double?
-  var azimuth: Double?
+  var altitude: Angle?
+  var azimuth: Angle?
 
   func attemptPositionCreation() -> DevicePosition? {
     guard let location = location,

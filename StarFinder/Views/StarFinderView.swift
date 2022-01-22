@@ -32,9 +32,9 @@ struct StarFinderView: View {
       ViewfinderDirectionsView(directions: viewModel.directions(to: horizontalCoords))
 
       VStack {
-        Text("Latitude: \(displayString(for: \.location.latitude.decimalDegrees))")
+        Text("Latitude: \(displayString(for: \.location.latitude))")
           .padding()
-        Text("Longitude: \(displayString(for: \.location.longitude.decimalDegrees))")
+        Text("Longitude: \(displayString(for: \.location.longitude))")
           .padding()
         Text("Altitude: \(displayString(for: \.altitude))")
           .padding()
@@ -52,8 +52,8 @@ struct StarFinderView: View {
     horizontalCoords = HorizontalCoordinates(coordinates: equatorialCoords, location: position.location, date: .now)
   }
 
-  func displayString(for keyPath: KeyPath<DevicePosition, Double>) -> String {
-    guard let value = viewModel.lastKnownPosition?[keyPath: keyPath].formattedToHundredth else { return "unknown" }
+  func displayString(for keyPath: KeyPath<DevicePosition, StarCoordinates.Angle>) -> String {
+    guard let value = viewModel.lastKnownPosition?[keyPath: keyPath].decimalDegrees.formattedToHundredth else { return "unknown" }
     return "\(value)"
   }
 }
