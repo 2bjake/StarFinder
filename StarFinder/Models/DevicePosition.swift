@@ -1,7 +1,8 @@
+import StarCoordinates
+
 // All values are in degrees
 struct DevicePosition {
-  var latitude: Double
-  var longitude: Double
+  var location: Location
   var altitude: Double
   var azimuth: Double
 }

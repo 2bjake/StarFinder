@@ -87,12 +87,12 @@ final class StarFinderViewModel: ObservableObject {
   }
 
   private func updateCoordinate(_ coordinate: CLLocationCoordinate2D) {
+    let location = Location(location: coordinate)
     if lastKnownPosition == nil {
-      partialPosition.coordinate = coordinate
+      partialPosition.location = location
       lastKnownPosition = partialPosition.attemptPositionCreation()
     } else {
-      lastKnownPosition?.latitude = coordinate.latitude
-      lastKnownPosition?.longitude = coordinate.longitude
+      lastKnownPosition?.location = location
     }
   }
 
@@ -117,16 +117,16 @@ final class StarFinderViewModel: ObservableObject {
 
 // Each data point comes in from a separate manager, so this holds each value until all have been recorded.
 private struct PartialPosition {
-  var coordinate: CLLocationCoordinate2D?
+  var location: Location?
   var altitude: Double?
   var azimuth: Double?
 
   func attemptPositionCreation() -> DevicePosition? {
-    guard let coordinate = coordinate,
+    guard let location = location,
           let altitude = altitude,
           let azimuth = azimuth
     else { return nil }
 
-    return DevicePosition(latitude: coordinate.latitude, longitude: coordinate.longitude, altitude: altitude, azimuth: azimuth)
+    return DevicePosition(location: location, altitude: altitude, azimuth: azimuth)
   }
 }

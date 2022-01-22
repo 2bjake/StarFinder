@@ -7,7 +7,6 @@
 
 import SwiftUI
 import StarCoordinates
-import CoreLocation
 
 /// View that shows the camera and directs the user toward the location specified 
 struct StarFinderView: View {
@@ -20,7 +19,7 @@ struct StarFinderView: View {
 
   let equatorialCoords: EquatorialCoordinates
 
-  init(equatorialCoords: EquatorialCoordinates, initialLocation: CLLocationCoordinate2D) {
+  init(equatorialCoords: EquatorialCoordinates, initialLocation: Location) {
     self.equatorialCoords = equatorialCoords
     _horizontalCoords = State(initialValue: .init(coordinates: equatorialCoords, location: initialLocation, date: .now))
   }
@@ -33,9 +32,9 @@ struct StarFinderView: View {
       ViewfinderDirectionsView(directions: viewModel.directions(to: horizontalCoords))
 
       VStack {
-        Text("Latitude: \(displayString(for: \.latitude))")
+        Text("Latitude: \(displayString(for: \.location.latitude.decimalDegrees))")
           .padding()
-        Text("Longitude: \(displayString(for: \.longitude))")
+        Text("Longitude: \(displayString(for: \.location.longitude.decimalDegrees))")
           .padding()
         Text("Altitude: \(displayString(for: \.altitude))")
           .padding()
@@ -50,7 +49,7 @@ struct StarFinderView: View {
 
   func updateCoordinates() {
     guard let position = viewModel.lastKnownPosition else { return }
-    horizontalCoords = HorizontalCoordinates(coordinates: equatorialCoords, location: CLLocationCoordinate2D(latitude: position.latitude, longitude: position.longitude), date: .now)
+    horizontalCoords = HorizontalCoordinates(coordinates: equatorialCoords, location: position.location, date: .now)
   }
 
   func displayString(for keyPath: KeyPath<DevicePosition, Double>) -> String {
@@ -61,7 +60,7 @@ struct StarFinderView: View {
 
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
-    StarFinderView(equatorialCoords: Star.example.coordinates, initialLocation: .init())
+    StarFinderView(equatorialCoords: Star.example.coordinates, initialLocation: .init(location: .init()))
       .previewInterfaceOrientation(.landscapeLeft)
   }
 }

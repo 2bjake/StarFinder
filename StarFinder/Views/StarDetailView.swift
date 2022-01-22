@@ -1,5 +1,4 @@
 import SwiftUI
-import CoreLocation
 import StarCoordinates
 
 struct StarDetailView: View {
