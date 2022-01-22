@@ -1,5 +1,5 @@
-import CoreLocation
 import StarCoordinates
+import Foundation
 
 @MainActor
 class StarDetailViewModel: ObservableObject {
@@ -12,7 +12,7 @@ class StarDetailViewModel: ObservableObject {
     locationTask = Task { [weak self] in
       let locationManager = LocationManager()
       for await location in locationManager.makeStream() {
-        self?.lastKnownLocation = Location(location: location)
+        self?.lastKnownLocation = location
       }
     }
   }

@@ -1,9 +1,10 @@
 import CoreLocation
+import StarCoordinates
 
 class LocationManager: NSObject, CLLocationManagerDelegate {
   private let manager = CLLocationManager()
   private var isRunning = false
-  private var onLocationChange: ((CLLocationCoordinate2D) -> Void)?
+  private var onLocationChange: ((Location) -> Void)?
 
   override init() {
     super.init()
@@ -26,10 +27,11 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
 
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     // !-safe, from docs: This array always contains at least one object
-    onLocationChange?(locations.last!.coordinate)
+    let location = Location(location: locations.last!.coordinate)
+    onLocationChange?(location)
   }
 
-  func makeStream() -> AsyncStream<CLLocationCoordinate2D> {
+  func makeStream() -> AsyncStream<Location> {
     guard !isRunning else { fatalError("Attempted to start stream when it is already running.") }
 
     return AsyncStream { continuation in

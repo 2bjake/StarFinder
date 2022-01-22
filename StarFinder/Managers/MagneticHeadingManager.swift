@@ -1,9 +1,10 @@
 import CoreLocation
+import StarCoordinates
 
 class MagneticHeadingManager: NSObject, CLLocationManagerDelegate {
   private let manager = CLLocationManager()
   private var isRunning = false
-  private var onHeadingChange: ((Double) -> Void)?
+  private var onHeadingChange: ((Angle) -> Void)?
 
   override init() {
     super.init()
@@ -25,7 +26,7 @@ class MagneticHeadingManager: NSObject, CLLocationManagerDelegate {
     manager.stopUpdatingHeading()
   }
 
-  func makeStream() -> AsyncStream<Double> {
+  func makeStream() -> AsyncStream<Angle> {
     guard !isRunning else { fatalError("Attempted to start stream when it's already running.") }
 
     return AsyncStream { continuation in
@@ -36,6 +37,6 @@ class MagneticHeadingManager: NSObject, CLLocationManagerDelegate {
   }
 
   func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-    onHeadingChange?(newHeading.trueHeading)
+    onHeadingChange?(Angle(decimalDegrees: newHeading.trueHeading))
   }
 }

@@ -6,10 +6,11 @@
 //
 
 import CoreMotion
+import StarCoordinates
 
 class AltitudeManager {
   private let manager = CMMotionManager()
-  private var onAltitudeChange: ((Double) -> Void)?
+  private var onAltitudeChange: ((Angle) -> Void)?
 
   private var isRunning: Bool { manager.isDeviceMotionActive }
 
@@ -21,8 +22,8 @@ class AltitudeManager {
   private func handler(motion: CMDeviceMotion?, error: Error?) {
     guard error == nil, let motion = motion else { return }
     let rollRadians = motion.attitude.roll
-    let altitudeDegrees = -rollRadians * 180 / .pi - 90 // TODO: what to do for >90?
-    onAltitudeChange?(altitudeDegrees)
+    let altitude = Angle(radians: -rollRadians - (.pi / 4)) // TODO: what to do for >90?
+    onAltitudeChange?(altitude)
   }
 
   private func stop() {
@@ -30,7 +31,7 @@ class AltitudeManager {
     manager.stopDeviceMotionUpdates()
   }
 
-  func makeStream() -> AsyncStream<Double> {
+  func makeStream() -> AsyncStream<Angle> {
     guard !isRunning else { fatalError("Attempted to start stream when it's already running.") }
 
     return AsyncStream { continuation in

@@ -1,5 +1,4 @@
 import Foundation
-import CoreLocation
 import StarCoordinates
 
 enum WayfinderDirection { case up, down, left, right, center }
@@ -54,7 +53,7 @@ final class StarFinderViewModel: ObservableObject {
     locationTask = Task { [weak self] in
       let locationManager = LocationManager()
       for await location in locationManager.makeStream() {
-        self?.updateCoordinate(location)
+        self?.updateLocation(location)
       }
     }
 
@@ -86,8 +85,7 @@ final class StarFinderViewModel: ObservableObject {
     altitudeTask?.cancel()
   }
 
-  private func updateCoordinate(_ coordinate: CLLocationCoordinate2D) {
-    let location = Location(location: coordinate)
+  private func updateLocation(_ location: Location) {
     if lastKnownPosition == nil {
       partialPosition.location = location
       lastKnownPosition = partialPosition.attemptPositionCreation()
@@ -96,8 +94,7 @@ final class StarFinderViewModel: ObservableObject {
     }
   }
 
-  private func updateAzimuth(_ azimuth: Double) {
-    let azimuth = Angle(decimalDegrees: azimuth)
+  private func updateAzimuth(_ azimuth: Angle) {
     if lastKnownPosition == nil {
       partialPosition.azimuth = azimuth
       lastKnownPosition = partialPosition.attemptPositionCreation()
@@ -106,8 +103,7 @@ final class StarFinderViewModel: ObservableObject {
     }
   }
 
-  private func updateAltitude(_ altitude: Double) {
-    let altitude = Angle(decimalDegrees: altitude)
+  private func updateAltitude(_ altitude: Angle) {
     if lastKnownPosition == nil {
       partialPosition.altitude = altitude
       lastKnownPosition = partialPosition.attemptPositionCreation()
