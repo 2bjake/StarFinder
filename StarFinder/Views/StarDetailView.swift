@@ -2,26 +2,6 @@ import SwiftUI
 import CoreLocation
 import StarCoordinates
 
-extension Double {
-  var formattedToTenth: String {
-    String(format: "%.01f", self)
-  }
-
-  var formattedToHundredth: String {
-    String(format: "%.02f", self)
-  }
-}
-
-func degreesMinutesSecondsString(_ angle: Double) -> String{
-  let isNegative = angle < 0
-  let degrees = Int(abs(angle))
-  let remainder = abs(angle) - Double(degrees)
-  let minutes = Int(remainder * 60)
-  let seconds = (remainder - Double(minutes) / 60) * 3600
-
-  return "\(isNegative ? "-" : "+")\(degrees)° \(minutes)' \(seconds.formattedToTenth)\""
-}
-
 struct StarDetailView: View {
   @StateObject private var viewModel = StarDetailViewModel()
   @State private var horizontalCoordinates: HorizontalCoordinates?
@@ -38,7 +18,7 @@ struct StarDetailView: View {
   }
 
   var decString: String {
-    degreesMinutesSecondsString(star.coordinates.declination.degrees)
+    star.coordinates.declination.decimalDegrees.formattedToDMS // TODO
   }
 
   var body: some View {
@@ -49,8 +29,8 @@ struct StarDetailView: View {
         Text("Declination: " + decString)
 
         if let location = viewModel.lastKnownLocation, let coords = horizontalCoordinates {
-          Text("Azimuth: " + degreesMinutesSecondsString(coords.azimuthDeg))
-          Text("Altitude: " + degreesMinutesSecondsString(coords.altitudeDeg))
+          Text("Azimuth: " + coords.azimuth.decimalDegrees.formattedToDMS)
+          Text("Altitude: " + coords.altitude.decimalDegrees.formattedToDMS)
 
           NavigationLink("Find") {
             StarFinderView(equatorialCoords: star.coordinates, initialLocation: location)

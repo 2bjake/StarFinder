@@ -20,16 +20,16 @@ final class StarFinderViewModel: ObservableObject {
     var directions = Set<WayfinderDirection>()
     guard let currentPosition = lastKnownPosition else { return directions }
 
-    if currentPosition.altitude - target.altitudeDeg > 5 {
+    if currentPosition.altitude - target.altitude.decimalDegrees > 5 {
       directions.insert(.down)
-    } else if currentPosition.altitude - target.altitudeDeg < -5 {
+    } else if currentPosition.altitude - target.altitude.decimalDegrees < -5 {
       directions.insert(.up)
     }
 
     // TODO: deal with 360 = 0
-    if currentPosition.azimuth - target.azimuthDeg > 5 {
+    if currentPosition.azimuth - target.azimuth.decimalDegrees > 5 {
       directions.insert(.left)
-    } else if currentPosition.azimuth - target.azimuthDeg < -5 {
+    } else if currentPosition.azimuth - target.azimuth.decimalDegrees < -5 {
       directions.insert(.right)
     }
 
