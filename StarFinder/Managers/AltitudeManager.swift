@@ -22,7 +22,7 @@ class AltitudeManager {
   private func handler(motion: CMDeviceMotion?, error: Error?) {
     guard error == nil, let motion = motion else { return }
     let rollRadians = motion.attitude.roll
-    let altitude = Angle(radians: -rollRadians - (.pi / 2)) // TODO: what to do for >90?
+    let altitude = Angle(radians: abs(rollRadians) - (.pi / 2))
     onAltitudeChange?(altitude)
   }
 
