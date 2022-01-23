@@ -1,6 +1,18 @@
 import SwiftUI
 import StarCoordinates
 
+private extension StarCoordinates.Angle.DMS {
+  var displayString: String {
+    "\(degrees > 0 ? "+" : "")\(degrees)° \(minutes)' \(seconds.formattedToTenth)\""
+  }
+}
+
+private extension RightAscension {
+  var displayString: String {
+    "\(hours)h \(minutes)m \(seconds.formattedToHundredth)s"
+  }
+}
+
 struct StarDetailView: View {
   @StateObject private var viewModel = StarDetailViewModel()
   @State private var horizontalCoordinates: HorizontalCoordinates?
@@ -16,20 +28,16 @@ struct StarDetailView: View {
     return "\(ra.hours)h \(ra.minutes)m \(ra.seconds.formattedToHundredth)s"
   }
 
-  var decString: String {
-    star.coordinates.declination.decimalDegrees.formattedToDMS // TODO
-  }
-
   var body: some View {
     List {
       Section("Coordinates") {
         Text("Right ascension: " + raString)
 
-        Text("Declination: " + decString)
+        Text("Declination: " + star.coordinates.declination.dms.displayString)
 
         if let location = viewModel.lastKnownLocation, let coords = horizontalCoordinates {
-          Text("Azimuth: " + coords.azimuth.decimalDegrees.formattedToDMS)
-          Text("Altitude: " + coords.altitude.decimalDegrees.formattedToDMS)
+          Text("Azimuth: " + coords.azimuth.dms.displayString)
+          Text("Altitude: " + coords.altitude.dms.displayString)
 
           NavigationLink("Find") {
             StarFinderView(equatorialCoords: star.coordinates, initialLocation: location)

@@ -25,10 +25,13 @@ final class StarFinderViewModel: ObservableObject {
       directions.insert(.up)
     }
 
-    // TODO: deal with 360 = 0
-    if currentPosition.azimuth.decimalDegrees - target.azimuth.decimalDegrees > 5 {
+    let targetAngle = target.azimuth.wrappedTo180()
+    let currentAngle = currentPosition.azimuth.wrappedTo180()
+    let degreeDifference = currentAngle.decimalDegrees - targetAngle.decimalDegrees
+
+    if degreeDifference > 5 {
       directions.insert(.left)
-    } else if currentPosition.azimuth.decimalDegrees - target.azimuth.decimalDegrees < -5 {
+    } else if degreeDifference < -5 {
       directions.insert(.right)
     }
 
