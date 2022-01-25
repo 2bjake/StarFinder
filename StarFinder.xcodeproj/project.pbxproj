@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5533836C279F88650023B0A8 /* StarCoordinates in Frameworks */ = {isa = PBXBuildFile; productRef = 5533836B279F88650023B0A8 /* StarCoordinates */; };
 		558B69BB27974062005DEEC0 /* StarFinderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69BA27974062005DEEC0 /* StarFinderApp.swift */; };
 		558B69BD27974062005DEEC0 /* StarFinderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69BC27974062005DEEC0 /* StarFinderView.swift */; };
 		558B69BF27974064005DEEC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 558B69BE27974064005DEEC0 /* Assets.xcassets */; };
@@ -24,7 +25,6 @@
 		558B69E32799C854005DEEC0 /* StarFinderARView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69E22799C854005DEEC0 /* StarFinderARView.swift */; };
 		558B69E5279B4C07005DEEC0 /* StarDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69E4279B4C07005DEEC0 /* StarDetailViewModel.swift */; };
 		558B69E7279BAAD2005DEEC0 /* Double+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69E6279BAAD2005DEEC0 /* Double+Formatting.swift */; };
-		558B69EC279C2EA9005DEEC0 /* StarCoordinates in Frameworks */ = {isa = PBXBuildFile; productRef = 558B69EB279C2EA9005DEEC0 /* StarCoordinates */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,7 +46,6 @@
 		558B69E22799C854005DEEC0 /* StarFinderARView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarFinderARView.swift; sourceTree = "<group>"; };
 		558B69E4279B4C07005DEEC0 /* StarDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarDetailViewModel.swift; sourceTree = "<group>"; };
 		558B69E6279BAAD2005DEEC0 /* Double+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Formatting.swift"; sourceTree = "<group>"; };
-		558B69E9279C2E70005DEEC0 /* StarCoordinates */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = StarCoordinates; path = ../StarCoordinates; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,7 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				558B69EC279C2EA9005DEEC0 /* StarCoordinates in Frameworks */,
+				5533836C279F88650023B0A8 /* StarCoordinates in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,7 +145,6 @@
 		558B69E8279C2E70005DEEC0 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				558B69E9279C2E70005DEEC0 /* StarCoordinates */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -175,7 +173,7 @@
 			);
 			name = StarFinder;
 			packageProductDependencies = (
-				558B69EB279C2EA9005DEEC0 /* StarCoordinates */,
+				5533836B279F88650023B0A8 /* StarCoordinates */,
 			);
 			productName = StarFinder;
 			productReference = 558B69B727974062005DEEC0 /* StarFinder.app */;
@@ -472,8 +470,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		558B69EB279C2EA9005DEEC0 /* StarCoordinates */ = {
+		5533836B279F88650023B0A8 /* StarCoordinates */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 558B69D327987B83005DEEC0 /* XCRemoteSwiftPackageReference "StarCoordinates" */;
 			productName = StarCoordinates;
 		};
 /* End XCSwiftPackageProductDependency section */
