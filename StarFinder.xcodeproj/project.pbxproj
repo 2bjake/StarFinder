@@ -15,13 +15,13 @@
 		558B69CB2797526C005DEEC0 /* StarFinderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69CA2797526C005DEEC0 /* StarFinderViewModel.swift */; };
 		558B69CD279758EC005DEEC0 /* AltitudeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69CC279758EC005DEEC0 /* AltitudeManager.swift */; };
 		558B69CF2797642E005DEEC0 /* MagneticHeadingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69CE2797642E005DEEC0 /* MagneticHeadingManager.swift */; };
-		558B69D227986706005DEEC0 /* ViewfinderDirectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69D127986706005DEEC0 /* ViewfinderDirectionsView.swift */; };
+		558B69D227986706005DEEC0 /* StarFinderDirectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69D127986706005DEEC0 /* StarFinderDirectionsView.swift */; };
 		558B69D72798AA46005DEEC0 /* DevicePosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69D62798AA46005DEEC0 /* DevicePosition.swift */; };
 		558B69DB2798B36D005DEEC0 /* StarListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69DA2798B36D005DEEC0 /* StarListView.swift */; };
 		558B69DD2798B383005DEEC0 /* StarListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69DC2798B383005DEEC0 /* StarListViewModel.swift */; };
 		558B69DF2798B395005DEEC0 /* Star.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69DE2798B395005DEEC0 /* Star.swift */; };
 		558B69E12799AE8A005DEEC0 /* StarDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69E02799AE8A005DEEC0 /* StarDetailView.swift */; };
-		558B69E32799C854005DEEC0 /* ARViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69E22799C854005DEEC0 /* ARViewContainer.swift */; };
+		558B69E32799C854005DEEC0 /* StarFinderARView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69E22799C854005DEEC0 /* StarFinderARView.swift */; };
 		558B69E5279B4C07005DEEC0 /* StarDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69E4279B4C07005DEEC0 /* StarDetailViewModel.swift */; };
 		558B69E7279BAAD2005DEEC0 /* Double+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558B69E6279BAAD2005DEEC0 /* Double+Formatting.swift */; };
 		558B69EC279C2EA9005DEEC0 /* StarCoordinates in Frameworks */ = {isa = PBXBuildFile; productRef = 558B69EB279C2EA9005DEEC0 /* StarCoordinates */; };
@@ -37,13 +37,13 @@
 		558B69CA2797526C005DEEC0 /* StarFinderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarFinderViewModel.swift; sourceTree = "<group>"; };
 		558B69CC279758EC005DEEC0 /* AltitudeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AltitudeManager.swift; sourceTree = "<group>"; };
 		558B69CE2797642E005DEEC0 /* MagneticHeadingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagneticHeadingManager.swift; sourceTree = "<group>"; };
-		558B69D127986706005DEEC0 /* ViewfinderDirectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewfinderDirectionsView.swift; sourceTree = "<group>"; };
+		558B69D127986706005DEEC0 /* StarFinderDirectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarFinderDirectionsView.swift; sourceTree = "<group>"; };
 		558B69D62798AA46005DEEC0 /* DevicePosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicePosition.swift; sourceTree = "<group>"; };
 		558B69DA2798B36D005DEEC0 /* StarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarListView.swift; sourceTree = "<group>"; };
 		558B69DC2798B383005DEEC0 /* StarListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarListViewModel.swift; sourceTree = "<group>"; };
 		558B69DE2798B395005DEEC0 /* Star.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Star.swift; sourceTree = "<group>"; };
 		558B69E02799AE8A005DEEC0 /* StarDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarDetailView.swift; sourceTree = "<group>"; };
-		558B69E22799C854005DEEC0 /* ARViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewContainer.swift; sourceTree = "<group>"; };
+		558B69E22799C854005DEEC0 /* StarFinderARView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarFinderARView.swift; sourceTree = "<group>"; };
 		558B69E4279B4C07005DEEC0 /* StarDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarDetailViewModel.swift; sourceTree = "<group>"; };
 		558B69E6279BAAD2005DEEC0 /* Double+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Formatting.swift"; sourceTree = "<group>"; };
 		558B69E9279C2E70005DEEC0 /* StarCoordinates */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = StarCoordinates; path = ../StarCoordinates; sourceTree = "<group>"; };
@@ -61,6 +61,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5533836A279F4BCA0023B0A8 /* StarFinder */ = {
+			isa = PBXGroup;
+			children = (
+				558B69BC27974062005DEEC0 /* StarFinderView.swift */,
+				558B69CA2797526C005DEEC0 /* StarFinderViewModel.swift */,
+				558B69D127986706005DEEC0 /* StarFinderDirectionsView.swift */,
+				558B69E22799C854005DEEC0 /* StarFinderARView.swift */,
+			);
+			path = StarFinder;
+			sourceTree = "<group>";
+		};
 		558B69AE27974062005DEEC0 = {
 			isa = PBXGroup;
 			children = (
@@ -113,14 +124,11 @@
 		558B69D82798AFA0005DEEC0 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				558B69BC27974062005DEEC0 /* StarFinderView.swift */,
-				558B69CA2797526C005DEEC0 /* StarFinderViewModel.swift */,
-				558B69D127986706005DEEC0 /* ViewfinderDirectionsView.swift */,
+				5533836A279F4BCA0023B0A8 /* StarFinder */,
 				558B69DA2798B36D005DEEC0 /* StarListView.swift */,
 				558B69DC2798B383005DEEC0 /* StarListViewModel.swift */,
 				558B69E02799AE8A005DEEC0 /* StarDetailView.swift */,
 				558B69E4279B4C07005DEEC0 /* StarDetailViewModel.swift */,
-				558B69E22799C854005DEEC0 /* ARViewContainer.swift */,
 				558B69E6279BAAD2005DEEC0 /* Double+Formatting.swift */,
 			);
 			path = Views;
@@ -233,9 +241,9 @@
 				558B69DF2798B395005DEEC0 /* Star.swift in Sources */,
 				558B69CD279758EC005DEEC0 /* AltitudeManager.swift in Sources */,
 				558B69DB2798B36D005DEEC0 /* StarListView.swift in Sources */,
-				558B69E32799C854005DEEC0 /* ARViewContainer.swift in Sources */,
+				558B69E32799C854005DEEC0 /* StarFinderARView.swift in Sources */,
 				558B69E5279B4C07005DEEC0 /* StarDetailViewModel.swift in Sources */,
-				558B69D227986706005DEEC0 /* ViewfinderDirectionsView.swift in Sources */,
+				558B69D227986706005DEEC0 /* StarFinderDirectionsView.swift in Sources */,
 				558B69CF2797642E005DEEC0 /* MagneticHeadingManager.swift in Sources */,
 				558B69D72798AA46005DEEC0 /* DevicePosition.swift in Sources */,
 				558B69BB27974062005DEEC0 /* StarFinderApp.swift in Sources */,

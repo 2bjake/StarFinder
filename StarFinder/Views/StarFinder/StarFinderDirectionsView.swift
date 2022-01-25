@@ -1,15 +1,6 @@
-//
-//  ViewfinderDirectionsView.swift
-//  StarFinder
-//
-//  Created by Jake Foster on 1/19/22.
-//
-
 import SwiftUI
 
-struct ViewfinderDirectionsView: View {
-  
-
+struct StarFinderDirectionsView: View {
   var directions: Set<WayfinderDirection>
 
   var body: some View {
@@ -58,6 +49,6 @@ struct ViewfinderDirectionsView: View {
 
 struct WayfinderView_Previews: PreviewProvider {
   static var previews: some View {
-    ViewfinderDirectionsView(directions: [])
+    StarFinderDirectionsView(directions: [])
   }
 }

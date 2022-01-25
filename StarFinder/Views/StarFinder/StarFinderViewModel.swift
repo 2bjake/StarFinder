@@ -35,9 +35,11 @@ final class StarFinderViewModel: ObservableObject {
       directions.insert(.right)
     }
 
-    if directions.isEmpty {
-      directions.insert(.center)
-    }
+    // TODO: make this an option if camera permissions aren't granted.
+// Disabling center now that the viewfinder is handled by AR.
+//    if directions.isEmpty {
+//      directions.insert(.center)
+//    }
 
     return directions
   }

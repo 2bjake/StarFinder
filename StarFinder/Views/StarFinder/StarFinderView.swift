@@ -12,24 +12,24 @@ import StarCoordinates
 struct StarFinderView: View {
   @StateObject private var viewModel = StarFinderViewModel()
   @State private var horizontalCoords: HorizontalCoordinates
-
+  
   let timer = Timer.publish(every: 1, tolerance: 0.1, on: .main, in: .common)
     .autoconnect()
     .map { _ in () }
-
+  
   let equatorialCoords: EquatorialCoordinates
-
+  
   init(equatorialCoords: EquatorialCoordinates, initialLocation: Location) {
     self.equatorialCoords = equatorialCoords
     _horizontalCoords = State(initialValue: .init(coordinates: equatorialCoords, location: initialLocation, date: .now))
   }
-
+  
   var body: some View {
     ZStack {
-      ARViewContainer()
+      StarFinderARView(coordinates: horizontalCoords)
         .ignoresSafeArea()
 
-      ViewfinderDirectionsView(directions: viewModel.directions(to: horizontalCoords))
+      StarFinderDirectionsView(directions: viewModel.directions(to: horizontalCoords))
 
       VStack {
         Text("Latitude: \(displayString(for: \.location.latitude))")
