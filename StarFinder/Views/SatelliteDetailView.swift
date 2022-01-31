@@ -7,13 +7,7 @@ private extension StarCoordinates.Angle.DMS {
   }
 }
 
-private extension RightAscension {
-  var displayString: String {
-    "\(hours)h \(minutes)m \(seconds.formattedToHundredth)s"
-  }
-}
-
-struct StarDetailView: View {
+struct SatelliteDetailView: View {
   @StateObject private var viewModel = StarDetailViewModel()
   @State private var horizontalCoordinates: HorizontalCoordinates?
 
@@ -21,31 +15,22 @@ struct StarDetailView: View {
     .autoconnect()
     .map { _ in () }
 
-  let star: Star
-
-  var raString: String {
-    let ra = star.coordinates.rightAscension
-    return "\(ra.hours)h \(ra.minutes)m \(ra.seconds.formattedToHundredth)s"
-  }
+  let satellite: Satellite
 
   var body: some View {
     List {
       Section("Coordinates") {
-        Text("Right ascension: " + raString)
-
-        Text("Declination: " + star.coordinates.declination.dms.displayString)
-
         if let location = viewModel.lastKnownLocation, let coords = horizontalCoordinates {
           Text("Azimuth: " + coords.azimuth.dms.displayString)
           Text("Altitude: " + coords.altitude.dms.displayString)
 
           NavigationLink("Find") {
-            StarFinderView(target: .equatorial(star.coordinates), initialLocation: location)
+            StarFinderView(target: .tle(satellite.tle), initialLocation: location)
           }
         }
       }
       .listStyle(InsetGroupedListStyle())
-      .navigationTitle(star.name)
+      .navigationTitle(satellite.name)
       .onReceive(timer, perform: updateCoordinates)
       .onAppear { viewModel.startTracking() }
       .onDisappear { viewModel.stopTracking() }
@@ -54,11 +39,11 @@ struct StarDetailView: View {
 
   private func updateCoordinates() {
     guard let location = viewModel.lastKnownLocation else { return }
-    horizontalCoordinates = .init(coordinates: star.coordinates, location: location, date: .now)
+    horizontalCoordinates = .init(tle: satellite.tle, location: location)
   }
 }
 
-struct StarDetailViefw_Previews: PreviewProvider {
+struct SatelliteDetailViefw_Previews: PreviewProvider {
   static var previews: some View {
     StarDetailView(star : .example)
   }

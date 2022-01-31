@@ -8,6 +8,11 @@
 import SwiftUI
 import StarCoordinates
 
+enum Target {
+  case equatorial(EquatorialCoordinates)
+  case tle(TwoLineElement)
+}
+
 /// View that shows the camera and directs the user toward the location specified 
 struct StarFinderView: View {
   @StateObject private var viewModel = StarFinderViewModel()
@@ -17,11 +22,16 @@ struct StarFinderView: View {
     .autoconnect()
     .map { _ in () }
   
-  let equatorialCoords: EquatorialCoordinates
+  let target: Target
   
-  init(equatorialCoords: EquatorialCoordinates, initialLocation: Location) {
-    self.equatorialCoords = equatorialCoords
-    _horizontalCoords = State(initialValue: .init(coordinates: equatorialCoords, location: initialLocation, date: .now))
+  init(target: Target, initialLocation: Location) {
+    self.target = target
+    switch target {
+      case .equatorial(let coords):
+        _horizontalCoords = State(initialValue: .init(coordinates: coords, location: initialLocation, date: .now))
+      case .tle(let tle):
+        _horizontalCoords = State(initialValue: .init(tle: tle, location: initialLocation))
+    }
   }
   
   var body: some View {
@@ -49,7 +59,12 @@ struct StarFinderView: View {
 
   func updateCoordinates() {
     guard let position = viewModel.lastKnownPosition else { return }
-    horizontalCoords = HorizontalCoordinates(coordinates: equatorialCoords, location: position.location, date: .now)
+    switch target {
+      case .equatorial(let coords):
+        horizontalCoords = HorizontalCoordinates(coordinates: coords, location: position.location, date: .now)
+      case .tle(let tle):
+        horizontalCoords = HorizontalCoordinates(tle: tle, location: position.location)
+    }
   }
 
   func displayString(for keyPath: KeyPath<DevicePosition, StarCoordinates.Angle>) -> String {
@@ -60,7 +75,7 @@ struct StarFinderView: View {
 
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
-    StarFinderView(equatorialCoords: Star.example.coordinates, initialLocation: .init(location: .init()))
+    StarFinderView(target: .equatorial(Star.example.coordinates), initialLocation: .init(location: .init()))
       .previewInterfaceOrientation(.landscapeLeft)
   }
 }
