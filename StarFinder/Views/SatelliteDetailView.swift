@@ -39,7 +39,7 @@ struct SatelliteDetailView: View {
 
   private func updateCoordinates() {
     guard let location = viewModel.lastKnownLocation else { return }
-    horizontalCoordinates = .init(tle: satellite.tle, location: location)
+    horizontalCoordinates = .init(tle: satellite.tle, location: location, date: .now)
   }
 }
 

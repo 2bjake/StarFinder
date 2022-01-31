@@ -30,7 +30,7 @@ struct StarFinderView: View {
       case .equatorial(let coords):
         _horizontalCoords = State(initialValue: .init(coordinates: coords, location: initialLocation, date: .now))
       case .tle(let tle):
-        _horizontalCoords = State(initialValue: .init(tle: tle, location: initialLocation))
+        _horizontalCoords = State(initialValue: .init(tle: tle, location: initialLocation, date: .now))
     }
   }
   
@@ -63,7 +63,7 @@ struct StarFinderView: View {
       case .equatorial(let coords):
         horizontalCoords = HorizontalCoordinates(coordinates: coords, location: position.location, date: .now)
       case .tle(let tle):
-        horizontalCoords = HorizontalCoordinates(tle: tle, location: position.location)
+        horizontalCoords = HorizontalCoordinates(tle: tle, location: position.location, date: .now)
     }
   }
 
